@@ -1,0 +1,30 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+URL = "https://www.guvi.in/"
+
+def test_dynamic_xpath_and_axes(driver):
+    driver.get(URL)
+    wait = WebDriverWait(driver, 20)
+
+    logo = wait.until(EC.presence_of_element_located((
+        By.XPATH, "//img[contains(@alt,'GUVI')]"
+    )))
+    assert logo is not None
+
+
+    parent_element = logo.find_element(By.XPATH, "parent::*")
+    assert parent_element is not None
+
+
+    following_siblings = logo.find_elements(
+        By.XPATH, "following-sibling::*"
+    )
+    assert following_siblings is not None
+
+
+    preceding_elements = logo.find_elements(
+        By.XPATH, "preceding::*"
+    )
+    assert len(preceding_elements) > 0
